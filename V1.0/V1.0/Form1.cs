@@ -18,17 +18,52 @@ namespace V1._0
         }
 
         private void button1_Click(object sender, EventArgs e)
+{
+    // Get input from text boxes
+    string taskName = txtTask.Text.Trim();
+    string dueDateText = txtDueDate.Text.Trim();
+
+    // Validate inputs
+    if (string.IsNullOrWhiteSpace(taskName) || string.IsNullOrWhiteSpace(dueDateText))
+    {
+        MessageBox.Show("Task name and due date cannot be empty.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+    }
+
+    // Validate and parse date
+           DateTime dueDate; 
+    if (!DateTime.TryParse(dueDateText, out  dueDate))
+    {
+        MessageBox.Show("Please enter a valid date in the format MM/DD/YYYY.", "Invalid Date", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+    }
+
+    // Add task to the list
+    listBoxTasks.Items.Add(taskName + "- Due:" +dueDate.ToShortDateString());
+
+    // Clear the input fields
+    txtTask.Clear();
+    txtDueDate.Clear();
+}
+
+
+        private void button2_Click(object sender, EventArgs e)
         {
-            string taskName = txtTask.Text;
-            string dueDate = txtDueDate.Text;
-
-            // No validation in v1.0
-            string taskEntry = taskName + " - Due: " + dueDate;
-            listBoxTasks.Items.Add(taskEntry);
-
-            // Clear inputs
             txtTask.Clear();
             txtDueDate.Clear();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (listBoxTasks.SelectedIndex != -1)
+            {
+                listBoxTasks.Items.RemoveAt(listBoxTasks.SelectedIndex);
+            }
+            else
+            {
+                MessageBox.Show("Please select a task to delete.", "Delete Task",
+        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
     }
